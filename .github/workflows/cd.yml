@@ -58,8 +58,8 @@ jobs:
             echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
 
             # Pull Docker Hub images with exact SHA
-            docker pull ${{ secrets.DOCKER_USERNAME }}/backend-app:${GITHUB_SHA}
-            docker pull ${{ secrets.DOCKER_USERNAME }}/frontend-app:${GITHUB_SHA}
+            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/backend-app:${GITHUB_SHA}
+            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/frontend-app:${GITHUB_SHA}
 
             
-            docker-compose -f docker-compose.prod.yml up -d
+            sudo docker-compose -f docker-compose.prod.yml up -d
