@@ -39,20 +39,32 @@ jobs:
 
       # 5️⃣ SSH into EC2: pull repo, update .env, pull Docker images, run containers
       - name: Deploy to EC2
-        if: ${{ success() }}
-        uses: appleboy/ssh-action@v0.1.6
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USER }}
-          key: ${{ secrets.EC2_SSH_KEY }}
-          port: 22
-          script: |
-            cd ~/Docker-CI-CD-Docker_HUB-EC2
-            git pull origin main
-            echo "DOCKER_USERNAME=${{secrets.DOCKER_USERNAME}}" > .env
-            echo "BACKEND_TAG=${GITHUB_SHA}" >> .env
-            echo "FRONTEND_TAG=${GITHUB_SHA}" >> .env
-            echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
-            docker pull ${{ secrets.DOCKER_USERNAME }}/backend-app:${GITHUB_SHA}
-            docker pull ${{ secrets.DOCKER_USERNAME }}/frontend-app:${GITHUB_SHA}
-            docker-compose -f docker-compose.prod.yml up
+  if: ${{ success() }}
+  uses: appleboy/ssh-action@v0.1.6
+  with:
+    host: ${{ secrets.EC2_HOST }}
+    username: ${{ secrets.EC2_USER }}
+    key: ${{ secrets.EC2_SSH_KEY }}
+    port: 22
+    script: |
+      cd ~/Docker-CI-CD-Docker_HUB-EC2
+
+      # Pull latest code
+      git fetch --all
+      git reset --hard origin/main
+
+      # Export the current commit SHA
+      export GITHUB_SHA=${{ github.sha }}
+
+      # Update .env
+      echo "DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }}" > .env
+      echo "BACKEND_TAG=${GITHUB_SHA}" >> .env
+      echo "FRONTEND_TAG=${GITHUB_SHA}" >> .env
+      echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
+
+      # Pull Docker Hub images with exact SHA
+      docker pull ${{ secrets.DOCKER_USERNAME }}/backend-app:${GITHUB_SHA}
+      docker pull ${{ secrets.DOCKER_USERNAME }}/frontend-app:${GITHUB_SHA}
+
+      # Run containers using docker compose
+      docker-compose -f docker-compose.prod.yml up -d
