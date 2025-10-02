@@ -57,16 +57,17 @@ jobs:
             echo "FRONTEND_TAG=${GITHUB_SHA}" >> .env
             echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
 
+
             # Stop and remove the Current Containers
             sudo docker-compose -f docker-compose.prod.yml down
 
-            # Remove the current images
+            # Remove the unused images
             sudo docker rmi ${{ secrets.DOCKER_USERNAME }}/backend-app
             sudo docker rmi ${{ secrets.DOCKER_USERNAME }}/frontend-app
+
 
             # Pull Docker Hub images with exact SHA
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/backend-app:${GITHUB_SHA}
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/frontend-app:${GITHUB_SHA}
-
             
             sudo docker-compose -f docker-compose.prod.yml up -d
