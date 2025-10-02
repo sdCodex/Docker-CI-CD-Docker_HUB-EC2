@@ -1,0 +1,52 @@
+# Dependencies
+node_modules
+.pnp
+.pnp.js
+/apps/backend/node_modules
+/apps/frontend/node_modules
+/packages/*/node_modules
+
+# Local env files (don’t leak secrets into Docker images)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Testing
+coverage
+
+# Turbo repo cache
+.turbo
+
+# Vercel
+.vercel
+
+# Build outputs
+.next/
+out/
+build
+dist
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Git
+.git
+.gitignore
+
+# Package manager lock files (keep only pnpm-lock.yaml!)
+yarn.lock
+package-lock.json
+
+# Editor/IDE
+.vscode
+.idea
+*.swp
+
+# Misc
+.DS_Store
+*.pem
