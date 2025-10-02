@@ -62,8 +62,8 @@ jobs:
             sudo docker-compose -f docker-compose.prod.yml down
 
             # Remove the unused images
-            sudo docker rmi ${{ secrets.DOCKER_USERNAME }}/backend-app
-            sudo docker rmi ${{ secrets.DOCKER_USERNAME }}/frontend-app
+            sudo docker system prune -af
+
 
 
             # Pull Docker Hub images with exact SHA
