@@ -66,5 +66,5 @@ jobs:
       docker pull ${{ secrets.DOCKER_USERNAME }}/backend-app:${GITHUB_SHA}
       docker pull ${{ secrets.DOCKER_USERNAME }}/frontend-app:${GITHUB_SHA}
 
-      # Run containers using docker compose
+      
       docker-compose -f docker-compose.prod.yml up -d
