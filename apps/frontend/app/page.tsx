@@ -16,7 +16,7 @@ export default function Home() {
   async function fetch() {
     try {
       setLoader(true);
-      const response = await axios.get("http://localhost:3001/");
+      const response = await axios.get("http://test-backend.my-projects.live/");
       setUsers(response.data);
     } catch (e: any) {
       setError(e.response.data);
