@@ -9,6 +9,7 @@ app.use(express.json());
 
 app.get("/", async (req, res) => {
   try {
+    console.log("Hi")
     const users = await dbClient.user.findMany();
     res.status(200).json(users);
   } catch (e) {
